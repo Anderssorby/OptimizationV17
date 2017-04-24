@@ -6,15 +6,15 @@ import numpy.linalg as la
 tol = 1e-7
 
 def CG(A, b, x):
-    r = b - np.dot(A, x)
+    r = b - A.dot(x)
     p = r
     k = 0
     while k < 1000:
-        alpha = np.inner(r, r)/np.inner(p, np.dot(A, p))
+        alpha = np.inner(r, r)/np.inner(p, A.dot(p))
         x = x + alpha*p
         rk = r
-        r = r - alpha*np.dot(A, pk)
-        if r < tol:
+        r = r - alpha*A.dot(p)
+        if la.norm(r) < tol:
             break
         beta = np.inner(r, r)/np.inner(rk, rk)
         p = r + beta*p
@@ -23,7 +23,7 @@ def CG(A, b, x):
     return x
 
 def test_problem2():
-    A = np.mat([
+    A = np.array([
         [2, -1, -1],
         [-1, 3, -1],
         [-1, -1, 2]
@@ -34,3 +34,6 @@ def test_problem2():
 
     print(la.solve(A, b))
     print(solCG)
+
+if __name__=="__main__":
+    test_problem2()
